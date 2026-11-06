@@ -1,0 +1,35 @@
+module low_power_alu (
+    input  logic [3:0] A,
+    input  logic [3:0] B,
+    input  logic [1:0] sel,
+    output logic [3:0] Y,
+    // Isolated operand signals
+    output logic [3:0] add_A,
+    output logic [3:0] add_B,
+    output logic [3:0] sub_A,
+    output logic [3:0] sub_B,
+    output logic [3:0] and_A,
+    output logic [3:0] and_B,
+    output logic [3:0] or_A,
+    output logic [3:0] or_B
+);
+   // Operand Isolation
+    assign add_A = (sel == 2'b00) ? A : 4'b0000;
+    assign add_B = (sel == 2'b00) ? B : 4'b0000;
+    assign sub_A = (sel == 2'b01) ? A : 4'b0000;
+    assign sub_B = (sel == 2'b01) ? B : 4'b0000;
+    assign and_A = (sel == 2'b10) ? A : 4'b0000;
+    assign and_B = (sel == 2'b10) ? B : 4'b0000;
+    assign or_A = (sel == 2'b11) ? A : 4'b0000;
+    assign or_B = (sel == 2'b11) ? B : 4'b0000;
+   // ALU Operations
+    always_comb begin
+        case (sel)
+            2'b00: Y = add_A + add_B;
+            2'b01: Y = sub_A - sub_B;
+            2'b10: Y = and_A & and_B;
+            2'b11: Y = or_A | or_B;
+            default: Y = 4'b0000;
+        endcase
+    end
+endmodule
