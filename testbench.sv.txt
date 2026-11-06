@@ -1,0 +1,43 @@
+module testbench;
+    logic [3:0] A, B;
+    logic [1:0] sel;
+    logic [3:0] Y;
+    logic [3:0] add_A, add_B;
+    logic [3:0] sub_A, sub_B;
+    logic [3:0] and_A, and_B;
+    logic [3:0] or_A, or_B;
+    low_power_alu uut (
+        .A(A),
+        .B(B),
+        .sel(sel),
+        .Y(Y),
+        .add_A(add_A),
+        .add_B(add_B),
+        .sub_A(sub_A),
+        .sub_B(sub_B),
+        .and_A(and_A),
+        .and_B(and_B),
+        .or_A(or_A),
+        .or_B(or_B)
+    );
+    initial begin
+        $dumpfile("low_power_alu.vcd");
+        $dumpvars(0, testbench);
+        A = 4'd5;
+        B = 4'd3;
+        sel = 2'b00;
+        #10;
+        $display("ADD: A=%0d B=%0d Y=%0d", A, B, Y);
+        sel = 2'b01;
+        #10;
+        $display("SUB: A=%0d B=%0d Y=%0d", A, B, Y);
+        sel = 2'b10;
+        #10;
+        $display("AND: A=%0d B=%0d Y=%0d", A, B, Y);
+        sel = 2'b11;
+        #10;
+        $display("OR : A=%0d B=%0d Y=%0d", A, B, Y);
+        #10;
+        $finish;
+    end
+endmodule
